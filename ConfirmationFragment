@@ -1,0 +1,46 @@
+package com.example.fragmetscitamdico
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+
+class SummaryFragment : Fragment() {
+    private lateinit var doctor: ViewModelMedicos
+    private lateinit var selectedDate: String
+    private lateinit var selectedTime: String
+
+    companion object {
+        fun newInstance(doctor: ViewModelMedicos, date: String, time: String): SummaryFragment {
+            val fragment = SummaryFragment()
+            val args = Bundle()
+            args.putParcelable("Doctor", doctor)
+            args.putString("Fecha", date)
+            args.putString("Hora", time)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        doctor = arguments?.getParcelable("doctor")!!
+        selectedDate = arguments?.getString("date")!!
+        selectedTime = arguments?.getString("time")!!
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val view = inflater.inflate(R.layout.fragment_confirmation, container, false)
+
+        val summaryTextView = view.findViewById<TextView>(R.id.Resumen)
+        summaryTextView.text = "Doctor: ${doctor.Nombre}\nEspecialidad: ${doctor.Especialidad}\nDisponibilidad: ${doctor.Disponibilidad}\nFecha: $selectedDate\nHora: $selectedTime"
+
+        return view
+    }
+}
+
+fun Bundle.putParcelable(s: String, doctor: ViewModelMedicos) {
+
+}
