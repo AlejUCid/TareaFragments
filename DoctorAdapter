@@ -1,0 +1,30 @@
+package com.example.fragmetscitamdico
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+
+class DoctorAdapter(private val doctors: List<ViewModelMedicos>, private val listener: (ViewModelMedicos) -> Unit) : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val nombre: TextView = view.findViewById(R.id.nombreDoct)
+        val especialidad: TextView = view.findViewById(R.id.especDoct)
+        val disponibilidad: TextView = view.findViewById(R.id.disponibDoct)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_doctor, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val doctor = doctors[position]
+        holder.nombre.text = doctor.Nombre
+        holder.especialidad.text = doctor.Especialidad
+        holder.disponibilidad.text = doctor.Disponibilidad
+        holder.itemView.setOnClickListener { listener(doctor) }
+    }
+
+    override fun getItemCount() = doctors.size
+}
