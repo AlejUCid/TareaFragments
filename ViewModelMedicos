@@ -1,0 +1,7 @@
+package com.example.fragmetscitamdico
+
+class ViewModelMedicos (
+    val Nombre: String,
+    val Especialidad: String,
+    val Disponibilidad: String
+)
