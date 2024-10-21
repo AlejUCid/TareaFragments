@@ -1,0 +1,51 @@
+package com.example.fragmetscitamdico
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.DatePicker
+import android.widget.TimePicker
+
+
+class AppointmentFragment : Fragment() {
+    private lateinit var doctor: ViewModelMedicos
+
+    companion object {
+        fun newInstance(doctor: ViewModelMedicos): AppointmentFragment {
+            val fragment = AppointmentFragment()
+            val args = Bundle()
+            args.putParcelable("Doctor", doctor)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        doctor = arguments?.getParcelable("doctor")!!
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val view = inflater.inflate(R.layout.fragment_appointment, container, false)
+
+        val datePicker = view.findViewById<DatePicker>(R.id.elegirFecha)
+        val timePicker = view.findViewById<TimePicker>(R.id.elegirTiempo)
+        val confirmButton = view.findViewById<Button>(R.id.confirmarBoton)
+
+        confirmButton.setOnClickListener {
+            val selectedDate = "${datePicker.dayOfMonth}/${datePicker.month + 1}/${datePicker.year}"
+            val selectedTime = "${timePicker.hour}:${timePicker.minute}"
+
+            val confirmFragment = SummaryFragment.newInstance(doctor, selectedDate, selectedTime)
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, confirmFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        return view
+    }
+}
